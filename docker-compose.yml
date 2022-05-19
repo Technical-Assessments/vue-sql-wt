@@ -1,0 +1,17 @@
+version: "3.6"
+
+services:
+  drf-server:
+    container_name: DRF-server
+    build:
+      context: "./server"
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+      # - "9229:9229"
+    volumes:
+      - ./server/:/server/
+    environment:
+      DB_NAME: ${DB_NAME}
+      APP_PORT: ${APP_PORT}
