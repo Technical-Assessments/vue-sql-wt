@@ -15,6 +15,8 @@ while getopts "u:e:" opt; do
     e)
       if [ $OPTARG = "dev" ]; then
       echo " 🔰 Environment: $OPTARG 🔰" >&2
+      rm -rf ./db/mysql_data
+      rm -rf ./db/logs
       docker system prune -a -f ;
       docker-compose stop;
       docker-compose down --remove-orphans ;

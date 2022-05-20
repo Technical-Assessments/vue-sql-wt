@@ -6,21 +6,25 @@ LOAD_PATH = "../test_mysql/employees.sql"
 
 def connection() -> Any:
   return pymysql.connect(
-    host        =   os.environ.get("MYSQL_HOST"),
-    # user        =   os.environ.get("MYSQL_USER"),
-    port        =  int(os.environ.get("MYSQL_PORT")),
-    # password    =   os.environ.get("MYSQL_ROOT_PASSWORD"),
+    host        =   "192.168.176.3",
+    user        =   os.environ.get("MYSQL_USER"),
+    port        =   3306,
+    password    =   os.environ.get("MYSQL_ROOT_PASSWORD"),
+    # database    =   os.environ.get("employees")
   )
 
 
 def main():
 
   cnn = connection()
-
   with cnn:
+    cnn.cursor().execute("source employees.sql")
+    cnn.commit()
+
+  """ with cnn:
     with open(LOAD_PATH, 'r') as f:
       cnn.cursor().execute(f.read())
-      cnn.commit()
+      cnn.commit() """
 
 
 if __name__ == "__main__":
