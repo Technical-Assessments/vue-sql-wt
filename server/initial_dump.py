@@ -1,31 +1,25 @@
 import os
-from typing import Any
 import pymysql
+from typing import Any
 
-LOAD_PATH = "../test_mysql/employees.sql"
 
 def connection() -> Any:
   return pymysql.connect(
-    host        =   "192.168.176.3",
     user        =   os.environ.get("MYSQL_USER"),
-    port        =   3306,
+    port        =   int(os.environ.get("MYSQL_PORT")),
     password    =   os.environ.get("MYSQL_ROOT_PASSWORD"),
-    # database    =   os.environ.get("employees")
+    database    =   os.environ.get("MYSQL_DATABASE")
   )
 
 
 def main():
-
-  cnn = connection()
-  with cnn:
-    cnn.cursor().execute("source employees.sql")
-    cnn.commit()
-
-  """ with cnn:
-    with open(LOAD_PATH, 'r') as f:
-      cnn.cursor().execute(f.read())
-      cnn.commit() """
-
+    cnn = connection()
+    with cnn:
+        with cnn.cursor() as cursor:
+            query = "SELECT * FROM employees LIMIT 10"
+            cursor.execute(query)
+            result = cursor.fetchall()
+            print(result)
 
 if __name__ == "__main__":
   main()

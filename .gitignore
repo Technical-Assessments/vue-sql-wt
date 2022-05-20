@@ -124,9 +124,10 @@ venv.bak/
 /site
 
 *.pdf
-/db/mysql_data
-/db/setup_db
-/db/logs
+*.ipynb
+
+/server/db/mysql_data
+/server/db/setup
 
 # mypy
 .mypy_cache/

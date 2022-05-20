@@ -9,8 +9,8 @@ services:
     ports:
       - "${MYSQL_PORT}:${MYSQL_PORT}"
     volumes:
-      - ./db/mysql_data:/var/lib/mysql
-      - ./setup_db/stscr/:/docker-entrypoint-initdb.d/
+      - ./server/db/mysql_data:/var/lib/mysql
+      - ./server/db/setup/:/docker-entrypoint-initdb.d/
     command: --default-authentication-plugin=mysql_native_password
     environment:
       MYSQL_ROOT_PASSWORD:        ${MYSQL_ROOT_PASSWORD}
