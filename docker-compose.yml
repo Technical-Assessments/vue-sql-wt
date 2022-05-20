@@ -1,11 +1,31 @@
 version: "3.6"
 
 services:
+
+  db:
+    image: mysqldb
+    container_name: mysql
+    build: ./db
+    restart: always
+    ports:
+      - "${MYSQL_PORT}:${MYSQL_PORT}"
+    # volumes:
+      # - ./db/mysql_data:/var/lib/mysql
+      # - ./server/setup_db:/docker-entrypoint-initdb.d/
+      # - ./db/setup_db/employees.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      MYSQL_PORT:                 ${MYSQL_PORT}
+      MYSQL_DATABASE:             ${MYSQL_DATABASE}
+      MYSQL_USER:                 ${MYSQL_USER}
+      MYSQL_ROOT_PASSWORD:        ${MYSQL_ROOT_PASSWORD}
+      MSQL_PASSWORD:              ${MSQL_PASSWORD}
+  
+
   drf-server:
     container_name: DRF-server
-    build:
-      context: "./server"
-      dockerfile: Dockerfile
+    build: ./server
+    depends_on:
+      - db
     restart: always
     ports:
       - "${APP_PORT}:${APP_PORT}"
@@ -13,5 +33,10 @@ services:
     volumes:
       - ./server/:/server/
     environment:
-      DB_NAME: ${DB_NAME}
       APP_PORT: ${APP_PORT}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+
+      MYSQL_HOST:           ${MYSQL_HOST}
+      MYSQL_PORT:           ${MYSQL_PORT}
+      MYSQL_DATABASE:       ${MYSQL_DATABASE}
+      MYSQL_USER:           ${MYSQL_USER}
