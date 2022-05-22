@@ -1,9 +1,11 @@
 import os
+from typing import Any
 import pymysql
 from pymysql.connections import Connection
 from pymysql.cursors import DictCursor
 
 
+# MYSQL db config
 user      : str = os.environ["MYSQL_USER"]
 port      : int = int(os.environ["MYSQL_PORT"])
 password  : str = os.environ["MYSQL_ROOT_PASSWORD"]
@@ -16,11 +18,11 @@ def connection() -> Connection:
         port        =     port,
         password    =     password,
         database    =     database,
-        cursorclass =    DictCursor
+        cursorclass =     DictCursor
     )
 
 
-def SQLSelect(query: str):
+def SQLSelect(query: str) -> tuple[dict[str, Any], ...]:
     with connection() as cnn:
         with cnn.cursor() as cursor:
             cursor.execute(query)
